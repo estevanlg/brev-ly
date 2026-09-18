@@ -1,3 +1,5 @@
+import { db } from '@/infra/db'
+import { schema } from '@/infra/db/schemas'
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
@@ -24,6 +26,11 @@ export const registerLinksRoutes: FastifyPluginAsyncZod = async server => {
 			},
 		},
 		async (request, reply) => {
+			await db.insert(schema.links).values({
+				originalUrl: request.body.originalUrl,
+				shortenedUrl: request.body.shortenedUrl,
+			})
+
 			return reply.status(201).send({ id: 'some-generated-id' })
 		}
 	)
