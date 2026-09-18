@@ -1,7 +1,7 @@
-import { db } from '@/infra/db'
-import { schema } from '@/infra/db/schemas'
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
+import { db } from '@/infra/db'
+import { schema } from '@/infra/db/schemas'
 
 export const registerLinksRoutes: FastifyPluginAsyncZod = async server => {
 	server.post(
