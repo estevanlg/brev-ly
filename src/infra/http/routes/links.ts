@@ -1,7 +1,6 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
-import { db } from '@/infra/db'
-import { schema } from '@/infra/db/schemas'
+import { createLink } from '@/app/functions/create-link'
 
 export const registerLinksRoutes: FastifyPluginAsyncZod = async server => {
 	server.post(
@@ -11,11 +10,21 @@ export const registerLinksRoutes: FastifyPluginAsyncZod = async server => {
 				summary: 'Create a new link',
 				body: z.object({
 					originalUrl: z.url(),
-					shortenedUrl: z.url(),
+					shortenedUrl: z.string().regex(/^[a-zA-Z0-9_-]+$/, {
+						message:
+							'shortenedUrl deve conter apenas letras e números, sem espaços ou caracteres especiais',
+					}),
 				}),
 				response: {
 					201: z.object({
 						id: z.string(),
+						originalUrl: z.url(),
+						shortenedUrl: z.string().regex(/^[a-zA-Z0-9_-]+$/, {
+							message:
+								'shortenedUrl deve conter apenas letras e números, sem espaços ou caracteres especiais',
+						}),
+						visitorCounter: z.number(),
+						//createdAt: z.string().datetime(),
 					}),
 					409: z
 						.object({
@@ -26,12 +35,13 @@ export const registerLinksRoutes: FastifyPluginAsyncZod = async server => {
 			},
 		},
 		async (request, reply) => {
-			await db.insert(schema.links).values({
-				originalUrl: request.body.originalUrl,
-				shortenedUrl: request.body.shortenedUrl,
-			})
+			const link = await createLink(request.body)
 
-			return reply.status(201).send({ id: 'some-generated-id' })
+			if (!link) {
+				return reply.status(409).send({ message: 'Link already exists' })
+			}
+
+			return reply.status(201).send(link)
 		}
 	)
 }
