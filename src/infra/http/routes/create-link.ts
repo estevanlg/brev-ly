@@ -2,7 +2,7 @@ import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 import { createLink } from '@/app/functions/create-link'
 
-export const registerLinksRoutes: FastifyPluginAsyncZod = async server => {
+export const createLinkRoute: FastifyPluginAsyncZod = async server => {
 	server.post(
 		'/links',
 		{
@@ -24,14 +24,34 @@ export const registerLinksRoutes: FastifyPluginAsyncZod = async server => {
 								'shortenedUrl deve conter apenas letras e números, sem espaços ou caracteres especiais',
 						}),
 						visitorCounter: z.number(),
-						//createdAt: z.string().datetime(),
+						createdAt: z.date(),
 					}),
+					400: z
+						.object({
+							message: z.string(),
+						})
+						.describe('Validation error.'),
 					409: z
 						.object({
 							message: z.string(),
 						})
 						.describe('Link already exists.'),
+					500: z
+						.object({
+							message: z.string(),
+						})
+						.describe('Internal server error.'),
 				},
+			},
+			errorHandler: (error, _, reply) => {
+				console.error(error)
+				if (error.code === 'FST_ERR_VALIDATION') {
+					return reply.status(400).send({
+						message: 'Validation error',
+					})
+				}
+
+				reply.status(500).send(error)
 			},
 		},
 		async (request, reply) => {

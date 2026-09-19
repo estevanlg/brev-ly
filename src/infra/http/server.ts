@@ -8,14 +8,17 @@ import {
 	serializerCompiler,
 	validatorCompiler,
 } from 'fastify-type-provider-zod'
-import { registerLinksRoutes } from './routes/links'
+import { createLinkRoute } from './routes/create-link'
+import { deleteLinkRoute } from './routes/delete-link'
+import { getLinksRoute } from './routes/get-links'
+import { updateVisitorCounterRoute } from './routes/update-link'
 
 const server = fastify()
 
 server.setValidatorCompiler(validatorCompiler)
 server.setSerializerCompiler(serializerCompiler)
 
-server.setErrorHandler((error, request, reply) => {
+server.setErrorHandler((error, _request, reply) => {
 	if (hasZodFastifySchemaValidationErrors(error)) {
 		return reply.status(400).send({
 			message: 'Validation Error',
@@ -42,7 +45,10 @@ server.register(fastifySwaggerUi, {
 	routePrefix: '/docs',
 })
 
-server.register(registerLinksRoutes)
+server.register(createLinkRoute)
+server.register(getLinksRoute)
+server.register(deleteLinkRoute)
+server.register(updateVisitorCounterRoute)
 
 server.listen({ port: 3333, host: '0.0.0.0' }).then(() => {
 	console.log('HTTP server running!')
