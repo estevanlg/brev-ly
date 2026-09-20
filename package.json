@@ -1,7 +1,6 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "type": "module",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,7 +12,9 @@
     "db:studio": "drizzle-kit studio",
     "db:migrate:test": "dotenv -e .env.test -- drizzle-kit migrate",
     "pretest": "pnpm run db:migrate:test",
-    "pretest:watch": "pnpm run db:migrate:test"
+    "pretest:watch": "pnpm run db:migrate:test",
+    "build": "tsup",
+    "start": "node dist/infra/http/server.mjs"
   },
   "keywords": [],
   "author": "",
@@ -30,6 +31,7 @@
     "@types/node": "^26.5.1",
     "dotenv-cli": "^11.0.0",
     "drizzle-kit": "^0.31.10",
+    "tsup": "^8.5.1",
     "tsx": "^4.23.13",
     "typescript": "^7.0.2",
     "vite-tsconfig-paths": "^6.1.1",

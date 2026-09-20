@@ -11,14 +11,14 @@
       "ESNext.Iterator",
       "ESNext.Promise"
     ],
-    "module": "esnext",
+    "module": "node16",
     "target": "es2024",
     "types": ["node"],
 
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "moduleResolution": "bundler",
+    "moduleResolution": "node16",
 
     "paths": {
       "@/*": ["./src/*"]
