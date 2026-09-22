@@ -1,7 +1,9 @@
 export function LinkForm() {
   return (
-    <div className="bg-gray-100 rounded-lg p-8 w-[380px] flex flex-col gap-6">
-        <h2 className="text-large text-gray-600">Novo link</h2>
+    <div className="bg-gray-100 rounded-lg p-6 sm:p-8 w-full sm:w-[380px] flex flex-col gap-6">
+        <h2 className="text-large text-gray-600 text-center sm:text-left">
+            Novo link
+        </h2>
         <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2 group has-focus:text-blue-base">
                 <label
