@@ -19,4 +19,23 @@
   --color-gray-600: #1f2025;
 
   --color-danger: #b12c4d;
+
+  --text-x-large: 24px;
+  --text-x-large--line-height: 32px;
+  --text-x-large--font-weight: 700;
+
+  --text-large: 18px;
+  --text-large--line-height: 24px;
+  --text-large--font-weight: 700;
+
+  --text-medium: 14px;
+  --text-medium--line-height: 18px;
+  --text-medium--font-weight: 600;
+
+  --text-small: 12px;
+  --text-small--line-height: 16px;
+
+  --text-x-small: 10px;
+  --text-x-small--line-height: 14px;
+  --text-x-small--font-weight: 400;
 }

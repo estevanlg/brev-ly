@@ -1,7 +1,11 @@
+import { LinkForm } from "./components/link-form";
+import { ListLinks } from "./components/list-links";
+
 export function App() {
   return (
-    <h1>
-      Hello, world!
-    </h1>
+    <main className="flex flex-row gap-6 justify-center items-center h-dvh">
+      <LinkForm />
+      <ListLinks />
+    </main>
   )
 }
