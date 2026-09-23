@@ -13,7 +13,7 @@ export function RedirectPage() {
                     shortUrl!
                 );
 
-                // await registerVisit(shortUrl!);
+                await registerVisit(link.id);
 
                 console.log(link);
                 setTimeout(() => {

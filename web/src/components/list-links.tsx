@@ -1,4 +1,4 @@
-import { DownloadSimpleIcon, LinkIcon } from "@phosphor-icons/react";
+import { DownloadSimpleIcon, LinkIcon, SpinnerGapIcon } from "@phosphor-icons/react";
 import { LinkCard } from "./link-card";
 import { useLinks } from "../hooks/use-links";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -43,10 +43,15 @@ export function ListLinks() {
         </button>
       </div>
 
-      {isEmpty ? (
-        <div
-          className="flex flex-col items-center justify-center gap-3 pt-4 pb-6"
-        >
+      {isLoading ? (
+        <div className="flex flex-col items-center justify-center gap-3 pt-4 pb-6">
+          <SpinnerGapIcon size={24} className="text-gray-400 animate-spin" />
+          <span className="text-x-small text-gray-500 uppercase text-center">
+            carregando links...
+          </span>
+        </div>
+      ) : isEmpty ? (
+        <div className="flex flex-col items-center justify-center gap-3 pt-4 pb-6">
           <LinkIcon size={32} className="text-gray-400" />
           <span className="text-x-small text-gray-500 uppercase text-center">
             Ainda não existem links cadastrados
@@ -58,7 +63,7 @@ export function ListLinks() {
           className="max-h-96 divide-y divide-gray-200 scrollbar-auto scrollbar-thumb-blue-base scrollbar-track-gray-100"
         >
           {links.map((link) => (
-            <LinkCard 
+            <LinkCard
               key={link.id}
               title={link.shortenedUrl}
               originalUrl={link.originalUrl}

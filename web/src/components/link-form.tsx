@@ -3,19 +3,20 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createLink } from "../services/links";
+import { WarningIcon } from "@phosphor-icons/react";
 
 const createLinkSchema = z.object({
   originalUrl: z
     .string()
-    .min(1, "Informe a URL original")
-    .url("Informe uma URL válida"),
+    .min(1, "Informe uma URL válida")
+    .url("Informe uma url válida"),
 
   shortenedUrl: z
     .string()
-    .min(1, "Informe a URL encurtada")
+    .min(1, "Informe uma url minúscula e sem espaço/caracter especial.")
     .regex(
-      /^[a-zA-Z0-9_-]+$/,
-      "Utilize apenas letras, números, hífen (-) e underline (_)"
+      /^[a-z0-9_-]+$/,
+      "Informe uma url minúscula e sem espaço/caracter especial."
     ),
 });
 
@@ -66,7 +67,10 @@ export function LinkForm() {
                     <div className="flex flex-col gap-2">
                         <label
                             htmlFor="originalUrl"
-                            className="text-x-small uppercase text-gray-500"
+                            className={`
+                                text-x-small uppercase
+                                ${errors.originalUrl ? "text-danger" : "text-gray-500"
+                            }`}
                         >
                             Link original
                         </label>
@@ -75,38 +79,45 @@ export function LinkForm() {
                             id="originalUrl"
                             placeholder="https://www.exemplo.com.br"
                             {...register("originalUrl")}
-                            className="
-                                w-full h-12 rounded-md border px-4 py-2
+                            className={`
+                                w-full h-12 rounded-lg border px-4
                                 text-base text-gray-600
                                 placeholder:text-gray-400
                                 focus:outline-none
                                 focus:ring-1 focus:ring-blue-base
                                 focus:border-blue-base
-                                border-gray-300
-                            "
+                                ${errors.originalUrl ? "border-danger" : "border-gray-300"}
+                            `}
                         />
 
                         {errors.originalUrl && (
-                            <span className="text-xs text-red-500">
-                                {errors.originalUrl.message}
-                            </span>
+                            <div className="flex flex-row gap-2">
+                                <WarningIcon size={16} className="text-danger" />
+
+                                <span className="text-small text-gray-500">
+                                    {errors.originalUrl.message}
+                                </span>
+                            </div>
                         )}
                     </div>
 
                     <div className="flex flex-col gap-2">
                         <label
                             htmlFor="shortenedUrl"
-                            className="text-x-small uppercase text-gray-500"
+                            className={`
+                                text-x-small uppercase
+                                ${errors.shortenedUrl ? "text-danger" : "text-gray-500"
+                            }`}
                         >
                             Link encurtado
                         </label>
 
                         <div
                             className={`
-                                flex items-center h-12 rounded-md px-4
+                                flex items-center h-12 rounded-lg px-4
                                 ${
                                 errors.shortenedUrl
-                                    ? "border border-red-500"
+                                    ? "border border-danger"
                                     : "border border-gray-300"
                                 }
                                 focus-within:border-blue-base
@@ -130,9 +141,13 @@ export function LinkForm() {
                         </div>
 
                         {errors.shortenedUrl && (
-                            <span className="text-xs text-red-500">
-                                {errors.shortenedUrl.message}
-                            </span>
+                            <div className="flex flex-row gap-2">
+                                <WarningIcon size={16} className="text-danger" />
+
+                                <span className="text-small text-gray-500">
+                                    {errors.shortenedUrl.message}
+                                </span>
+                            </div>
                         )}
                     </div>
                 </div>
