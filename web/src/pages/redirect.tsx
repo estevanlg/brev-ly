@@ -1,6 +1,37 @@
 import logo from "../assets/logo-icon.svg";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { getLinkBySlug, registerVisit } from "../services/links";
 
 export function RedirectPage() {
+    const { shortUrl } = useParams();
+
+    useEffect(() => {
+        async function redirect() {
+            try {
+                const link = await getLinkBySlug(
+                    shortUrl!
+                );
+
+                // await registerVisit(shortUrl!);
+
+                console.log(link);
+                setTimeout(() => {
+                    window.location.replace(
+                        link.originalUrl
+                    );
+                }, 3000);
+            } catch(error) {
+                console.error(error);
+                window.location.replace(
+                    "/not-found"
+                );
+            }
+        }
+
+        redirect();
+    }, [shortUrl]);
+    
     return (
         <div className="flex min-h-screen items-center justify-center p-3">
             <div className="w-full max-w-[580px] rounded-lg bg-gray-100 shadow-sm">

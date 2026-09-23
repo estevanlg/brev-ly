@@ -1,5 +1,8 @@
 import { DownloadSimpleIcon, LinkIcon } from "@phosphor-icons/react";
 import { LinkCard } from "./link-card";
+import { useLinks } from "../hooks/use-links";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteLink } from "../services/links";
 
 interface LinkData {
   id: string;
@@ -9,22 +12,23 @@ interface LinkData {
   createdAt: Date;
 }
 
-const links: LinkData[] = [
-  { id: "1", shortenedUrl: "brev.ly/Portfolio-Dev-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", originalUrl: "devsite.portfolio.com.br/devname-123456-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", visitorCounter: 1, createdAt: new Date() },
-  { id: "2", shortenedUrl: "brev.ly/Portfolio-Dev", originalUrl: "devsite.portfolio.com.br/devname-123456", visitorCounter: 2, createdAt: new Date() },
-  { id: "3", shortenedUrl: "brev.ly/Portfolio-Dev", originalUrl: "devsite.portfolio.com.br/devname-123456", visitorCounter: 0, createdAt: new Date() },
-  { id: "4", shortenedUrl: "brev.ly/Portfolio-Dev", originalUrl: "devsite.portfolio.com.br/devname-123456", visitorCounter: 1, createdAt: new Date() },
-  { id: "5", shortenedUrl: "brev.ly/Portfolio-Dev", originalUrl: "devsite.portfolio.com.br/devname-123456", visitorCounter: 2, createdAt: new Date() },
-  { id: "6", shortenedUrl: "brev.ly/Portfolio-Dev", originalUrl: "devsite.portfolio.com.br/devname-123456", visitorCounter: 0, createdAt: new Date() },
-  { id: "7", shortenedUrl: "brev.ly/Portfolio-Dev", originalUrl: "devsite.portfolio.com.br/devname-123456", visitorCounter: 1, createdAt: new Date() },
-  { id: "8", shortenedUrl: "brev.ly/Portfolio-Dev", originalUrl: "devsite.portfolio.com.br/devname-123456", visitorCounter: 2, createdAt: new Date() },
-  { id: "9", shortenedUrl: "brev.ly/Portfolio-Dev", originalUrl: "devsite.portfolio.com.br/devname-123456", visitorCounter: 0, createdAt: new Date() },
-  { id: "10", shortenedUrl: "brev.ly/Portfolio-Dev", originalUrl: "devsite.portfolio.com.br/devname-123456", visitorCounter: 1, createdAt: new Date() },
-  { id: "11", shortenedUrl: "brev.ly/Portfolio-Dev", originalUrl: "devsite.portfolio.com.br/devname-123456", visitorCounter: 2, createdAt: new Date() },
-  { id: "12", shortenedUrl: "brev.ly/Portfolio-Dev", originalUrl: "devsite.portfolio.com.br/devname-123456", visitorCounter: 0, createdAt: new Date() },
-];
-
 export function ListLinks() {
+  const queryClient = useQueryClient();
+
+  const {
+    data: links = [] as LinkData[],
+    isLoading,
+  } = useLinks();
+
+  const deleteMutation = useMutation({
+      mutationFn: deleteLink,
+      onSuccess: () => {
+          queryClient.invalidateQueries({
+          queryKey: ["links"],
+          });
+      },
+  });
+
   const isEmpty = links.length === 0;
 
   return (
@@ -60,7 +64,7 @@ export function ListLinks() {
               originalUrl={link.originalUrl}
               clicks={link.visitorCounter}
               onCopy={() => {}}
-              onDelete={() => {}}
+              onDelete={() => deleteMutation.mutate(link.id)}
             />
           ))}
         </div>
