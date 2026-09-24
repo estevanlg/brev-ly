@@ -160,7 +160,15 @@ export function ListLinks() {
                   </div>
                 ));
               }}
-              onDelete={() => deleteMutation.mutate(link.id)}
+              onDelete={() => {
+                const confirmed = window.confirm(
+                  `Você realmente deseja deletar o link ${link.shortenedUrl}?`
+                );
+
+                if (confirmed) {
+                  deleteMutation.mutate(link.id);
+                }  
+              }}
             />
           ))}
         </div>
