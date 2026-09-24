@@ -3,7 +3,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createLink } from "../services/links";
-import { WarningIcon } from "@phosphor-icons/react";
+import { WarningIcon, XCircleIcon } from "@phosphor-icons/react";
+import toast from "react-hot-toast";
 
 const createLinkSchema = z.object({
   originalUrl: z
@@ -37,13 +38,54 @@ export function LinkForm() {
 
     const createLinkMutation = useMutation({
         mutationFn: createLink,
-
         onSuccess: () => {
-        queryClient.invalidateQueries({
-            queryKey: ["links"],
-        });
+            queryClient.invalidateQueries({
+                queryKey: ["links"],
+            });
 
-        reset();
+            reset();
+        },
+        onError: (error: any) => {
+            if (error?.response?.status === 409) {
+                toast.custom((t) => (
+                    <div
+                        className={`flex items-center gap-3 rounded-md bg-red-100 p-4 shadow-md border border-red-300 ${
+                        t.visible ? "animate-enter" : "animate-leave"
+                        }`}
+                    >
+                        <XCircleIcon size={24} className="text-red-600 flex-shrink-0" />
+
+                        <div className="flex flex-col">
+                        <span className="font-semibold text-small text-red-700">
+                            Erro no cadastro
+                        </span>
+                        <span className="text-small text-red-600">
+                            Essa URL encurtada já existe.
+                        </span>
+                        </div>
+                    </div>
+                ));
+            } else {
+                console.error(error);
+                toast.custom((t) => (
+                    <div
+                        className={`flex items-center gap-3 rounded-md bg-red-100 p-4 shadow-md border border-red-300 ${
+                        t.visible ? "animate-enter" : "animate-leave"
+                        }`}
+                    >
+                        <XCircleIcon size={24} className="text-red-600 flex-shrink-0" />
+
+                        <div className="flex flex-col">
+                        <span className="font-semibold text-small text-red-700">
+                            Erro no cadastro
+                        </span>
+                        <span className="text-small text-red-600">
+                            Erro inesperado ao cadastrar link.
+                        </span>
+                        </div>
+                    </div>
+                ));
+            }
         },
     });
 

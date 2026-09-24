@@ -18,9 +18,14 @@ export function LinkCard({
     return (
         <div className="flex items-center justify-between rounded-lg py-5 transition-colors">
             <div className="flex min-w-0 flex-col">
-                <span className="cursor-pointer text-medium font-medium text-blue-base truncate">
+                <a
+                    href={`/${title}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="cursor-pointer text-medium font-medium text-blue-base truncate"
+                >
                     {title}
-                </span>
+                </a>
 
                 <span className="text-small text-gray-500 truncate">
                     {originalUrl}

@@ -1,6 +1,7 @@
 import { LinkForm } from "../components/link-form";
 import { ListLinks } from "../components/list-links";
 import brevlyLogo from "../assets/Logo.svg";
+import { Toaster } from "react-hot-toast";
 
 export function HomePage() {
   return (
@@ -18,6 +19,17 @@ export function HomePage() {
           </div>
         </div>
       </div>
+
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          style: {
+            borderRadius: "8px",
+            padding: "12px 16px",
+            fontSize: "14px",
+          },
+        }}
+      />
     </main>
   )
 }
