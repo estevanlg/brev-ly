@@ -25,8 +25,45 @@ export function ListLinks() {
       mutationFn: deleteLink,
       onSuccess: () => {
           queryClient.invalidateQueries({
-          queryKey: ["links"],
+            queryKey: ["links"],
           });
+
+          toast.custom((t) => (
+            <div
+              className={`flex items-center gap-3 rounded-md bg-green-100 p-4 shadow-md border border-green-300 ${
+                t.visible ? "animate-enter" : "animate-leave"
+              }`}
+            >
+              <InfoIcon size={24} className="text-green-600 flex-shrink-0" />
+              <div className="flex flex-col">
+                <span className="font-semibold text-small text-green-700">
+                  Link excluído com sucesso
+                </span>
+                <span className="text-small text-green-600">
+                  O link foi removido da sua lista.
+                </span>
+              </div>
+            </div>
+          ));
+      },
+      onError: () => {
+        toast.custom((t) => (
+          <div
+            className={`flex items-center gap-3 rounded-md bg-red-100 p-4 shadow-md border border-red-300 ${
+              t.visible ? "animate-enter" : "animate-leave"
+            }`}
+          >
+            <XCircleIcon size={24} className="text-red-600 flex-shrink-0" />
+            <div className="flex flex-col">
+              <span className="font-semibold text-small text-red-700">
+                Erro na exclusão
+              </span>
+              <span className="text-small text-red-600">
+                Não foi possível excluir o link.
+              </span>
+            </div>
+          </div>
+        ));
       },
   });
 
@@ -55,7 +92,10 @@ export function ListLinks() {
   const isEmpty = links.length === 0;
 
   return (
-    <div className="bg-gray-100 rounded-lg p-6 sm:p-8 w-full sm:w-[580px] flex flex-col gap-5">
+    <div className="relative overflow-hidden bg-gray-100 rounded-lg p-6 sm:p-8 w-full sm:w-[580px] flex flex-col gap-5">
+      {isLoading && (
+        <div className="absolute top-0 left-0 h-1 w-24 bg-blue-base animate-[loading-border_1.5s_linear_infinite]" />
+      )}
       <div className="flex items-center justify-between border-b border-gray-200 pb-5">
         <h2 className="text-large text-gray-600">Meus links</h2>
         <button

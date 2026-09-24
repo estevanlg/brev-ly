@@ -40,3 +40,13 @@
   --text-x-small--line-height: 14px;
   --text-x-small--font-weight: 400;
 }
+
+@keyframes loading-border {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(calc(580px + 100%));
+  }
+}
