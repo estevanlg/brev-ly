@@ -56,12 +56,12 @@ export function LinkForm() {
                         <XCircleIcon size={24} className="text-red-600 flex-shrink-0" />
 
                         <div className="flex flex-col">
-                        <span className="font-semibold text-small text-red-700">
-                            Erro no cadastro
-                        </span>
-                        <span className="text-small text-red-600">
-                            Essa URL encurtada já existe.
-                        </span>
+                            <span className="font-semibold text-small text-red-700">
+                                Erro no cadastro
+                            </span>
+                            <span className="text-small text-red-600">
+                                Essa URL encurtada já existe.
+                            </span>
                         </div>
                     </div>
                 ));
@@ -76,12 +76,12 @@ export function LinkForm() {
                         <XCircleIcon size={24} className="text-red-600 flex-shrink-0" />
 
                         <div className="flex flex-col">
-                        <span className="font-semibold text-small text-red-700">
-                            Erro no cadastro
-                        </span>
-                        <span className="text-small text-red-600">
-                            Erro inesperado ao cadastrar link.
-                        </span>
+                            <span className="font-semibold text-small text-red-700">
+                                Erro no cadastro
+                            </span>
+                            <span className="text-small text-red-600">
+                                Erro inesperado ao cadastrar link.
+                            </span>
                         </div>
                     </div>
                 ));

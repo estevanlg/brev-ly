@@ -1,8 +1,8 @@
-import { DownloadSimpleIcon, LinkIcon, SpinnerGapIcon, InfoIcon  } from "@phosphor-icons/react";
+import { DownloadSimpleIcon, LinkIcon, SpinnerGapIcon, InfoIcon, XCircleIcon } from "@phosphor-icons/react";
 import { LinkCard } from "./link-card";
 import { useLinks } from "../hooks/use-links";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteLink } from "../services/links";
+import { deleteLink, exportLinks } from "../services/links";
 import toast from "react-hot-toast";
 
 interface LinkData {
@@ -30,6 +30,28 @@ export function ListLinks() {
       },
   });
 
+  const exportMutation = useMutation({
+    mutationFn: exportLinks,
+    onSuccess: (data) => {
+      window.open(data.reportUrl, "_blank");
+    },
+    onError: () => {
+      toast.custom((t) => (
+        <div
+          className={`flex items-center gap-3 rounded-md bg-red-100 p-4 shadow-md border border-red-300 ${
+            t.visible ? "animate-enter" : "animate-leave"
+          }`}
+        >
+          <XCircleIcon size={24} className="text-red-600 flex-shrink-0" />
+          <div className="flex flex-col">
+            <span className="font-semibold text-small text-red-700">Erro na exportação</span>
+            <span className="text-small text-red-600">Não foi possível gerar o relatório.</span>
+          </div>
+        </div>
+      ));
+    },
+  });
+
   const isEmpty = links.length === 0;
 
   return (
@@ -38,8 +60,14 @@ export function ListLinks() {
         <h2 className="text-large text-gray-600">Meus links</h2>
         <button
           className="bg-gray-200 text-small text-gray-500 rounded-sm px-3 py-2 h-8 flex flex-row items-center transition-all outline-2 outline-transparent hover:outline-blue-base disabled:opacity-50 disabled:hover:outline-transparent"
+          onClick={() => exportMutation.mutate()}
+          disabled={exportMutation.isPending || isEmpty}
         >
-          <DownloadSimpleIcon size={14} className="mr-2" />
+          {exportMutation.isPending ? (
+            <SpinnerGapIcon size={14} className="mr-2 animate-spin" />
+          ) : (
+            <DownloadSimpleIcon size={14} className="mr-2" />
+          )}
           Baixar CSV
         </button>
       </div>

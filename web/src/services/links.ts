@@ -37,3 +37,9 @@ export async function registerVisit(id: string) {
 export async function deleteLink(id: string) {
   await api.delete(`/links/${id}`);
 }
+
+export async function exportLinks() {
+  const { data } = await api.get<{ reportUrl: string }>("/links/export");
+
+  return data;
+}
