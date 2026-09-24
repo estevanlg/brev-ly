@@ -15,7 +15,6 @@ export function RedirectPage() {
 
                 await registerVisit(link.id);
 
-                console.log(link);
                 setTimeout(() => {
                     window.location.replace(
                         link.originalUrl

@@ -6,10 +6,10 @@ import { Toaster } from "react-hot-toast";
 export function HomePage() {
   return (
     <main className="min-h-screen flex items-center justify-center">
-      <div className="flex flex-col items-center lg:items-start w-full max-w-5xl p-3">
-        <img src={brevlyLogo} alt="Logo Brevly" className="text-blue-base h-6 mb-2" />
+      <div className="flex flex-col items-center lg:items-start w-full max-w-5xl p-3 gap-6 lg:gap-8">
+        <img src={brevlyLogo} alt="Logo Brevly" className="text-blue-base h-6" />
         
-        <div className="flex flex-col lg:flex-row gap-6 w-full">
+        <div className="flex flex-col lg:flex-row lg:gap-5 gap-3 w-full">
           <div className="flex-none">
             <LinkForm />
           </div>
